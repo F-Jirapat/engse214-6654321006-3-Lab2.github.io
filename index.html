@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab 2: SQL Injection Prevention</title>
+    <link rel="stylesheet" href="style.css"> <!-- ลิงก์ไฟล์ CSS -->
+</head>
+<body>
+    <div class="container">
+        <h1>Lab 2: SQL Injection Demo</h1>
+        
+        <!-- Code Examples Section -->
+        <div class="code-section">
+            <div class="code-example vulnerable">
+                <div class="code-header">
+                    <span class="icon">❌</span>
+                    <h3>Vulnerable Code (Simulated)</h3>
+                </div>
+                <pre><code>function loginUser(username, password) {
+    const query = `SELECT * FROM users 
+                   WHERE username = '${username}' 
+                   AND password = '${password}'`;
+    // This is vulnerable to: admin' OR '1'='1' --
+    return executeQuery(query);
+}</code></pre>
+            </div>
+            
+            <div class="code-example secure">
+                <div class="code-header">
+                    <span class="icon">✅</span>
+                    <h3>Secure Code (Simulated)</h3>
+                </div>
+                <pre><code>function loginUserSecure(username, password) {
+    const query = `SELECT * FROM users 
+                   WHERE username = ? 
+                   AND password = ?`;
+    // Using parameterized queries (simulated)
+    return executeSecureQuery(query, [username, password]);
+}</code></pre>
+            </div>
+        </div>
+        
+        <!-- Testing Form Section -->
+        <div class="form-section">
+            <h2>ทดสอบ SQL Injection Protection</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" 
+                           placeholder="(ลอง: admin' OR '1'='1' --)" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                
+                <div class="button-group">
+                    <button type="button" id="vulnerableBtn" class="btn vulnerable">
+                        <span class="icon">❌</span>
+                        Vulnerable Query
+                    </button>
+                    <button type="button" id="secureBtn" class="btn secure">
+                        <span class="icon">✅</span>
+                        Secure Query
+                    </button>
+                </div>
+            </form>
+            
+            <div id="result" class="result-area">
+                <!-- Results will be displayed here -->
+            </div>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
